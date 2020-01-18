@@ -45,6 +45,7 @@ Date: 18.01.2020 helixd2k18@IMN
 
 ## Materials 
 
+- https://github.com/world8th/vkt (based on that framework...)
 - https://github.com/eloj/radix-sorting (basics of)
 - http://www.heterogeneouscompute.org/wordpress/wp-content/uploads/2011/06/RadixSort.pdf (principles)
 - https://vgc.poly.edu/~csilva/papers/cgf.pdf (partially)
