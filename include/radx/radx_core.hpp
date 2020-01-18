@@ -1,16 +1,9 @@
 #pragma once
 
-// include vulkan API 
-//#include <intrin.h>
-//#include <vulkan/vulkan.h>
-//#include <volk/volk.h>
-#include "../vulkan/vulkan.hpp"
-#include "../red21/botanic.h"
-//#include <volk/volk.h>
-//namespace cvk {
-    #include <vma/vk_mem_alloc.h>
-//};
+// 
 #include <fstream>
+#include "vkt2/utils.hpp"
+#include "vkt2/vector.hpp"
 
 namespace radx {
 
@@ -23,7 +16,7 @@ namespace radx {
     // radix sort algorithm
     class Algorithm;
     class Radix;
-    class VmaAllocatedBuffer;
+    //class VmaAllocatedBuffer;
 
     // 
     class InputInterface;

@@ -16,11 +16,11 @@ namespace rad {
 
     // general command buffer pipeline barrier
     static inline void commandTransferBarrier(const vk::CommandBuffer& cmdBuffer) {
-        cvk::VkMemoryBarrier memoryBarrier = {};
-        memoryBarrier.sType = cvk::VK_STRUCTURE_TYPE_MEMORY_BARRIER;
+        vkh::VkMemoryBarrier memoryBarrier = {};
+        memoryBarrier.sType = VK_STRUCTURE_TYPE_MEMORY_BARRIER;
         memoryBarrier.pNext = nullptr;
-        memoryBarrier.srcAccessMask = cvk::VK_ACCESS_MEMORY_WRITE_BIT | cvk::VK_ACCESS_SHADER_WRITE_BIT | cvk::VK_ACCESS_TRANSFER_WRITE_BIT;
-        memoryBarrier.dstAccessMask = cvk::VK_ACCESS_MEMORY_READ_BIT | cvk::VK_ACCESS_SHADER_READ_BIT | cvk::VK_ACCESS_TRANSFER_READ_BIT | cvk::VK_ACCESS_UNIFORM_READ_BIT;
+        memoryBarrier.srcAccessMask = VK_ACCESS_MEMORY_WRITE_BIT | VK_ACCESS_SHADER_WRITE_BIT | VK_ACCESS_TRANSFER_WRITE_BIT;
+        memoryBarrier.dstAccessMask = VK_ACCESS_MEMORY_READ_BIT | VK_ACCESS_SHADER_READ_BIT | VK_ACCESS_TRANSFER_READ_BIT | VK_ACCESS_UNIFORM_READ_BIT;
         cmdBuffer.pipelineBarrier(
             vk::PipelineStageFlagBits::eTransfer | vk::PipelineStageFlagBits::eComputeShader,
             vk::PipelineStageFlagBits::eTransfer | vk::PipelineStageFlagBits::eComputeShader, {}, { memoryBarrier }, {}, {});
@@ -29,11 +29,10 @@ namespace rad {
     class ComputeFramework {
     protected:
         vk::Queue queue = {};
+        vk::Fence fence = {};
         vk::Device device = {};
         vk::Instance instance = {};
         vk::PhysicalDevice physicalDevice = {};
-        
-        vk::Fence fence = {};
         vk::CommandPool commandPool = {};
 
         
@@ -177,8 +176,8 @@ namespace rad {
         std::shared_ptr<radx::PhysicalDeviceHelper> physicalHelper;
         std::shared_ptr<radx::InputInterface> inputInterface;
         std::shared_ptr<ComputeFramework> fw;
-        std::shared_ptr<radx::VmaAllocatedBuffer> vmaDeviceBuffer, vmaToHostBuffer, vmaHostBuffer;//, vmaToDeviceBuffer;
-        
+        std::shared_ptr<vkt::VmaBufferAllocation> vmaDeviceBuffer, vmaToHostBuffer, vmaHostBuffer;
+
 
         // 
         const size_t elementCount = (1u << 23u);

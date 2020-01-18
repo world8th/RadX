@@ -22,7 +22,9 @@ set(SOURCES_LIST
     "./include/vulkan/*"
     "./include/vma/*"
     "./include/vku/*"
-    #"./include/volk/*"
+    "./include/vkt2/*"
+    "./include/vkh/*"
+    "./include/glm/*"
     "./include/spirv/*"
     "./include/spirv/*/*"
     "./src/*.hpp"
@@ -37,6 +39,7 @@ set(SOURCES_LIST
 
 # Set definition
 set (DEFINES
+    -DNOMINMAX
     -D_CRT_SECURE_NO_WARNINGS
     -D_USE_MATH_DEFINES
     -DGLM_FORCE_SWIZZLE
@@ -97,6 +100,7 @@ endif()
 # 
 if (Vulkan_LIBRARY)
     set (LIBS ${LIBS} ${Vulkan_LIBRARY})
+    set (INC_DIR ${INC_DIR} ${Vulkan_INCLUDE_DIRS})
 endif()
 
 if (GLFW_LIBRARIES)

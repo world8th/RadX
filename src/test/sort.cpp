@@ -44,7 +44,7 @@ namespace rad {
 #endif
 
         auto supportedVkApiVersion = 0u;
-        auto apiResult = vma::vkEnumerateInstanceVersion(&supportedVkApiVersion);
+        auto apiResult = vkEnumerateInstanceVersion(&supportedVkApiVersion);
         if (supportedVkApiVersion < VK_MAKE_VERSION(1, 1, 0)) return instance;
 
         // get our needed extensions
@@ -315,18 +315,31 @@ namespace rad {
         // get memory size and set max element count
         vk::DeviceSize memorySize = keysBackupOffset + keysBackupSize;
         {
-            vmaDeviceBuffer = std::make_shared<radx::VmaAllocatedBuffer>(this->device, memorySize, vk::BufferUsageFlagBits::eStorageBuffer | vk::BufferUsageFlagBits::eTransferDst | vk::BufferUsageFlagBits::eTransferSrc | vk::BufferUsageFlagBits::eStorageTexelBuffer | vk::BufferUsageFlagBits::eUniformTexelBuffer, vma::VMA_MEMORY_USAGE_GPU_ONLY);
-            vmaHostBuffer = std::make_shared<radx::VmaAllocatedBuffer>(this->device, memorySize, vk::BufferUsageFlagBits::eStorageBuffer | vk::BufferUsageFlagBits::eTransferSrc, vma::VMA_MEMORY_USAGE_GPU_TO_CPU);
-            vmaToHostBuffer = std::make_shared<radx::VmaAllocatedBuffer>(this->device, memorySize, vk::BufferUsageFlagBits::eStorageBuffer | vk::BufferUsageFlagBits::eTransferDst, vma::VMA_MEMORY_USAGE_GPU_TO_CPU);
+            //vmaDeviceBuffer = std::make_shared<radx::VmaAllocatedBuffer>(this->device, memorySize, vk::BufferUsageFlagBits::eStorageBuffer | vk::BufferUsageFlagBits::eTransferDst | vk::BufferUsageFlagBits::eTransferSrc | vk::BufferUsageFlagBits::eStorageTexelBuffer | vk::BufferUsageFlagBits::eUniformTexelBuffer, VMA_MEMORY_USAGE_GPU_ONLY);
+            //vmaHostBuffer = std::make_shared<radx::VmaAllocatedBuffer>(this->device, memorySize, vk::BufferUsageFlagBits::eStorageBuffer | vk::BufferUsageFlagBits::eTransferSrc, VMA_MEMORY_USAGE_GPU_TO_CPU);
+            //vmaToHostBuffer = std::make_shared<radx::VmaAllocatedBuffer>(this->device, memorySize, vk::BufferUsageFlagBits::eStorageBuffer | vk::BufferUsageFlagBits::eTransferDst, VMA_MEMORY_USAGE_GPU_TO_CPU);
+
+            vmaDeviceBuffer = std::make_shared<vkt::VmaBufferAllocation>(*device, vkh::VkBufferCreateInfo{
+                .size = memorySize,
+                .usage = { .eTransferSrc = 1, .eTransferDst = 1, .eUniformTexelBuffer = 1, .eStorageTexelBuffer = 1, .eStorageBuffer = 1 }
+            }, VMA_MEMORY_USAGE_GPU_ONLY);
+            vmaHostBuffer = std::make_shared<vkt::VmaBufferAllocation>(*device, vkh::VkBufferCreateInfo{
+                .size = memorySize,
+                .usage = {.eTransferSrc = 1, .eTransferDst = 1, .eUniformTexelBuffer = 1, .eStorageTexelBuffer = 1, .eStorageBuffer = 1 }
+            }, VMA_MEMORY_USAGE_GPU_TO_CPU);
+            vmaToHostBuffer = std::make_shared<vkt::VmaBufferAllocation>(*device, vkh::VkBufferCreateInfo{
+               .size = memorySize,
+               .usage = {.eTransferSrc = 1, .eTransferDst = 1, .eUniformTexelBuffer = 1, .eStorageTexelBuffer = 1, .eStorageBuffer = 1 }
+            }, VMA_MEMORY_USAGE_GPU_TO_CPU);
         };
 
         // 
-        radx::Vector<uint32_t>
+        vkt::Vector<uint32_t>
             // in-host buffers
-            keysHostVector = radx::Vector<uint32_t>(vmaHostBuffer, elementCount, keysOffset),
-            keysToHostVector = radx::Vector<uint32_t>(vmaToHostBuffer, elementCount, keysOffset),
-            keysDeviceVector = radx::Vector<uint32_t>(vmaDeviceBuffer, elementCount, keysOffset),
-            swapDeviceVector = radx::Vector<uint32_t>(vmaDeviceBuffer, elementCount, keysBackupOffset)
+            keysHostVector = vkt::Vector<uint32_t>(vmaHostBuffer, keysOffset, elementCount * 4u),
+            keysToHostVector = vkt::Vector<uint32_t>(vmaToHostBuffer, keysOffset, elementCount * 4u),
+            keysDeviceVector = vkt::Vector<uint32_t>(vmaDeviceBuffer, keysOffset, elementCount * 4u),
+            swapDeviceVector = vkt::Vector<uint32_t>(vmaDeviceBuffer, keysBackupOffset, elementCount * 4u)
             ;
 
         // on deprecation

@@ -1,15 +1,13 @@
 #pragma once 
 #include "radx_core.hpp"
 #include "radx_device.hpp"
-#include "radx_buffer.hpp"
 
 namespace radx {
 
     class InternalInterface { // used for connection between algorithms and storage
     protected:
         std::shared_ptr<radx::Device> device = {};
-        std::unique_ptr<VmaAllocatedBuffer> bufferMemory = {}; // allocated personally, once
-        
+        vkt::Vector<uint8_t> bufferMemory = {}; // allocated personally, once
 
         vk::DescriptorSet descriptorSet = {};
         size_t maxElementCount = 1024*1024;
@@ -37,7 +35,13 @@ namespace radx {
         virtual InternalInterface& setHistogramBufferInfo(const vk::DescriptorBufferInfo& histogram = {}){ this->histogramBufferInfo = histogram; return *this; };
         virtual InternalInterface& setPrefixScansBufferInfo(const vk::DescriptorBufferInfo& prefixScans = {}){ this->prefixScansBufferInfo = prefixScans; return *this; };
         virtual InternalInterface& setMaxElementCount(const size_t& elementCount = 0) { this->maxElementCount = maxElementCount; return *this; };
-        virtual InternalInterface& buildMemory(const vk::DeviceSize& memorySize) {this->bufferMemory = std::make_unique<radx::VmaAllocatedBuffer>(this->device, memorySize, vk::BufferUsageFlagBits::eStorageBuffer | vk::BufferUsageFlagBits::eTransferDst | vk::BufferUsageFlagBits::eTransferSrc | vk::BufferUsageFlagBits::eStorageTexelBuffer | vk::BufferUsageFlagBits::eUniformTexelBuffer); return *this; };
+        virtual InternalInterface& buildMemory(const vk::DeviceSize& memorySize) {
+            this->bufferMemory = vkt::Vector<uint8_t>(std::make_shared<vkt::VmaBufferAllocation>(*this->device, vkh::VkBufferCreateInfo{
+                .size = memorySize,
+                .usage = { .eTransferSrc = 1, .eTransferDst = 1, .eUniformTexelBuffer = 1, .eStorageTexelBuffer = 1, .eStorageBuffer = 1 }
+            }));
+            return *this;
+        };
         virtual InternalInterface& buildDescriptorSet();
 
         // vk::DescriptorSet caster
@@ -82,18 +86,17 @@ namespace radx {
             groupX = 1,//64,
             groupY = 1;
         std::vector<vk::Pipeline> pipelines = {};
-        
-        vk::PipelineLayout pipelineLayout;
+        vk::PipelineLayout pipelineLayout = {};
 
         // internal methods (for devs)
-        virtual cvk::VkResult command(const vk::CommandBuffer& cmdBuf, const std::unique_ptr<radx::InternalInterface>& internalInterface, const std::shared_ptr<radx::InputInterface>& inputInterface, cvk::VkResult& vkres) { return cvk::VK_SUCCESS; };
-        virtual cvk::VkResult createInternalMemory(std::unique_ptr<radx::InternalInterface>& internalInterface, const size_t& maxElementCount = 1024 * 1024) { return cvk::VK_SUCCESS; };
+        virtual VkResult command(const vk::CommandBuffer& cmdBuf, const std::unique_ptr<radx::InternalInterface>& internalInterface, const std::shared_ptr<radx::InputInterface>& inputInterface, VkResult& vkres) { return VK_SUCCESS; };
+        virtual VkResult createInternalMemory(std::unique_ptr<radx::InternalInterface>& internalInterface, const size_t& maxElementCount = 1024 * 1024) { return VK_SUCCESS; };
 
     public:
         Algorithm(): groupX(1){};
 
         friend Sort<Algorithm>;
-        virtual cvk::VkResult initialize(const std::shared_ptr<radx::Device>& device) { return cvk::VK_SUCCESS; };
+        virtual VkResult initialize(const std::shared_ptr<radx::Device>& device) { return VK_SUCCESS; };
 
         // can be used by children 
         virtual operator Algorithm&() { return *this; };
@@ -127,7 +130,7 @@ namespace radx {
 
         // TODO: add unique ptr support of input interface 
         virtual Sort<T>& command(const vk::CommandBuffer& cmdBuf, std::shared_ptr<radx::InputInterface>& inputInterface){
-            cvk::VkResult vkres = cvk::VK_SUCCESS; algorithm->command(cmdBuf, internalInterface, inputInterface, vkres); //return vkres;
+            VkResult vkres = VK_SUCCESS; algorithm->command(cmdBuf, internalInterface, inputInterface, vkres); //return vkres;
             return *this;
         };
 
@@ -137,14 +140,14 @@ namespace radx {
     class Radix : public Algorithm, public std::enable_shared_from_this<Radix> {
     protected:
         uint32_t counting = 0, partition = 1, scattering = 2, indiction = 3, permutation = 4, resolve = 5;
-        virtual cvk::VkResult command(const vk::CommandBuffer& cmdBuf, const std::unique_ptr<radx::InternalInterface>& internalInterface, const std::shared_ptr<radx::InputInterface>& inputInterface, cvk::VkResult& vkres) override;
+        virtual VkResult command(const vk::CommandBuffer& cmdBuf, const std::unique_ptr<radx::InternalInterface>& internalInterface, const std::shared_ptr<radx::InputInterface>& inputInterface, VkResult& vkres) override;
 
     public:
         Radix() { this->groupX = 108u; };
 
         friend Sort<Radix>;
-        virtual cvk::VkResult initialize(const std::shared_ptr<radx::Device>& device) override;
-        virtual cvk::VkResult createInternalMemory(std::unique_ptr<radx::InternalInterface>& internalInterface, const size_t& maxElementCount = 1024 * 1024) override;
+        virtual VkResult initialize(const std::shared_ptr<radx::Device>& device) override;
+        virtual VkResult createInternalMemory(std::unique_ptr<radx::InternalInterface>& internalInterface, const size_t& maxElementCount = 1024 * 1024) override;
     };
 
 };
