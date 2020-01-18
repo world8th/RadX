@@ -22,6 +22,7 @@ GPU sorting shaders dedication from vRt project. Optimized for modern GPU's and 
 - Execute Day     : [2020:Q1]
 - Based On        : Vulkan.H, C++20, STL
 - General To Do   : Complete radix-sort shaders for other GPU's
+- Testing On GPU  : NVIDIA GeForce RTX 2070 (Gigabyte)
 
 Date: 18.01.2020 helixd2k18@IMN
 ```
