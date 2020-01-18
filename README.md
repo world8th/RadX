@@ -4,6 +4,28 @@
 
 GPU sorting shaders dedication from vRt project. Optimized for modern GPU's and written on Vulkan API (GLSL).
 
+## Tech Info 
+
+```MD
+- Architecture    : VKt (9:Gen)
+- RHI             : Yes, Vulkan-HPP
+- Support OS      : Windows 10 (2004 or Newer)
+- Support HW      : RTX 2070 or familiar...
+- Extensions      : NATIVE 
+- Project Type    : Experimental, Personal
+- Portfolio       : WIP
+- Role/Target     : Faster and newer Radix Sort (8-bit and above)
+- Graphical API   : Vulkan-API, Vulkan-HPP (compatible)
+- Target Games    : Vulkan API Based...
+- Code Language   : C++20, Visual Studio 2019 Support
+- Commercial      : Under Consideration
+- Execute Day     : [2020:Q1]
+- Based On        : Vulkan.H, C++20, STL
+- General To Do   : Complete radix-sort shaders for other GPU's
+
+Date: 18.01.2020 helixd2k18@IMN
+```
+
 ## What to be want to do
 
 - Optimized sorting for NVIDIA RTX GPU's (and, probably, Volta GPU's)
