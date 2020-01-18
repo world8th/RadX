@@ -1,3 +1,9 @@
+#ifdef VKT_FORCE_VMA_IMPLEMENTATION
+#ifndef VMA_IMPLEMENTATION
+#define VMA_IMPLEMENTATION
+#endif
+#endif
+
 #include "utils.hpp"
 #include "structs.hpp"
 

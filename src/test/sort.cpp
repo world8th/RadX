@@ -1,5 +1,7 @@
-#define VMA_IMPLEMENTATION
 #define RADX_IMPLEMENTATION
+#define VMA_IMPLEMENTATION
+#include <vulkan/vk_mem_alloc.h>
+
 #include "sort.hpp"
 
 //#include <stdio.h>
