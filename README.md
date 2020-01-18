@@ -1,4 +1,4 @@
-# RadX (VK-1.1.109)
+# RadX (VK-1.1.130)
 
 > You asked question, but how can be fast radix sort in NVIDIA Turing GPU's?
 
