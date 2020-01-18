@@ -38,7 +38,7 @@
 
 
 namespace rad {
-
+    /*
     vk::Instance ComputeFramework::createInstance() {
 
 #ifdef VOLK_H_
@@ -190,7 +190,7 @@ namespace rad {
         // 
         return this->device;
     };
-
+    */
 
 
 #ifdef RENDERDOC_DEBUGGABLE

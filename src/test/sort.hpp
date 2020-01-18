@@ -5,6 +5,7 @@
 
 #define VKU_NO_GLFW
 #include <radx/radx.hpp>
+#include "vkt2/fw.hpp"
 
 #ifdef THRUST_TESTABLE
 #define ENABLE_THRUST_BENCHMARK
@@ -26,6 +27,7 @@ namespace rad {
             vk::PipelineStageFlagBits::eTransfer | vk::PipelineStageFlagBits::eComputeShader, {}, { memoryBarrier }, {}, {});
     };
 
+    /*
     class ComputeFramework {
     protected:
         vk::Queue queue = {};
@@ -163,7 +165,9 @@ namespace rad {
             };
             device.resetFences({ 1, &fence });
         }
-    };
+    };*/
+
+    using ComputeFramework = vkt::GPUFramework;
 
 
     class TestSort : public std::enable_shared_from_this<TestSort> {
