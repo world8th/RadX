@@ -57,6 +57,11 @@
 #extension GL_EXT_shader_explicit_arithmetic_types_int16 : enable
 #extension GL_EXT_shader_explicit_arithmetic_types_int8 : enable
 
+// 
+#extension GL_EXT_shader_subgroup_extended_types_int8 : enable
+#extension GL_EXT_shader_subgroup_extended_types_int16 : enable
+#extension GL_EXT_shader_subgroup_extended_types_int64 : enable
+
 // subgroup operations
 #extension GL_ARB_shader_ballot : enable
 #extension GL_AMD_shader_ballot : enable
