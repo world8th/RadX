@@ -1,4 +1,4 @@
-#pragma once
+#pragma once // #
 
 //#ifdef OS_WIN
 #if (defined(_WIN32) || defined(__MINGW32__) || defined(_MSC_VER_) || defined(__MINGW64__)) 
@@ -225,13 +225,12 @@ namespace vkt
     public:
         inline vk::Instance& createInstance() {
 
-
 #ifdef VOLK_H_
             volkInitialize();
 #endif
 
             // 
-            assert((instanceVersion = vk::enumerateInstanceVersion()) >= VK_MAKE_VERSION(1, 1, 0));
+            assert((instanceVersion = vk::enumerateInstanceVersion()) >= VK_MAKE_VERSION(1, 2, 131));
 
             // get required extensions
 #ifdef VKT_ENABLE_GLFW_SUPPORT
@@ -276,7 +275,7 @@ namespace vkt
             auto appinfo = vk::ApplicationInfo{};
             appinfo.pNext = nullptr;
             appinfo.pApplicationName = "VKTest";
-            appinfo.apiVersion = VK_MAKE_VERSION(1, 1, 126);
+            appinfo.apiVersion = VK_MAKE_VERSION(1, 2, 131);
 
             // create instance info
             auto cinstanceinfo = vk::InstanceCreateInfo{};
@@ -323,6 +322,7 @@ namespace vkt
             };
 
             // minimal features
+            auto gTexelBufferAligment = vk::PhysicalDeviceTexelBufferAlignmentFeaturesEXT{};
             auto gStorage16 = vk::PhysicalDevice16BitStorageFeatures{};
             auto gStorage8 = vk::PhysicalDevice8BitStorageFeaturesKHR{};
             auto gDescIndexing = vk::PhysicalDeviceDescriptorIndexingFeaturesEXT{};
@@ -331,6 +331,7 @@ namespace vkt
             //auto gConsertvative = vk::PhysicalDeviceConservativeRasterizationPropertiesEXT{};
 
             // 
+            gFloat16U8.pNext = &gTexelBufferAligment;
             gStorage8.pNext = &gFloat16U8;
             gStorage16.pNext = &gStorage8;
             gDescIndexing.pNext = &gStorage16;
