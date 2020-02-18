@@ -75,3 +75,46 @@ ipch/*
 */ipch/*
 ipch/
 */ipch/
+
+
+# Ban CMAKE Generated
+build/
+build/*
+*/build/
+*/build/*
+
+# Ban CLION Generated
+cmake-build*/
+cmake-build*/*
+*/cmake-build*/
+*/cmake-build*/*
+
+# Ban IDEA Generated
+#.idea/
+#.idea/*
+#*/.idea/
+#*/.idea/*
+
+# Ban CLION Legal
+build-clion/
+build-clion/*
+*/build-clion/
+*/build-clion/*
+
+# Unlink VKT and VKH
+include/vkt/*
+include/vkh/*
+include/vkt2/*
+include/vkt
+include/vkh
+include/vkt2
+
+# Unlink VKT and VKH (any directory)
+*/include/vkt/*
+*/include/vkh/*
+*/include/vkt2/*
+*/include/vkt
+*/include/vkh
+*/include/vkt2
+
+
