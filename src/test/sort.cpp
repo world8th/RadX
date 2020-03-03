@@ -1,3 +1,23 @@
+#if defined(_WIN32) && !defined(WIN32)
+#define WIN32
+#endif
+
+#ifdef WIN32
+#define VK_USE_PLATFORM_WIN32_KHR
+#endif
+
+//#ifdef OS_WIN
+#if (defined(_WIN32) || defined(__MINGW32__) || defined(_MSC_VER_) || defined(__MINGW64__)) 
+#define GLFW_EXPOSE_NATIVE_WIN32
+#define GLFW_EXPOSE_NATIVE_WGL
+#endif
+
+//#ifdef OS_LNX
+#ifdef __linux__
+#define GLFW_EXPOSE_NATIVE_X11
+#define GLFW_EXPOSE_NATIVE_GLX
+#endif
+
 #define RADX_IMPLEMENTATION
 #define VMA_IMPLEMENTATION
 #include <vulkan/vk_mem_alloc.h>
@@ -321,15 +341,15 @@ namespace rad {
             //vmaHostBuffer = std::make_shared<radx::VmaAllocatedBuffer>(this->device, memorySize, vk::BufferUsageFlagBits::eStorageBuffer | vk::BufferUsageFlagBits::eTransferSrc, VMA_MEMORY_USAGE_GPU_TO_CPU);
             //vmaToHostBuffer = std::make_shared<radx::VmaAllocatedBuffer>(this->device, memorySize, vk::BufferUsageFlagBits::eStorageBuffer | vk::BufferUsageFlagBits::eTransferDst, VMA_MEMORY_USAGE_GPU_TO_CPU);
 
-            vmaDeviceBuffer = std::make_shared<vkt::VmaBufferAllocation>(*device, vkh::VkBufferCreateInfo{
+            vmaDeviceBuffer = std::make_shared<vkt::VmaBufferAllocation>(VmaAllocator(*device), vkh::VkBufferCreateInfo{
                 .size = memorySize,
                 .usage = { .eTransferSrc = 1, .eTransferDst = 1, .eUniformTexelBuffer = 1, .eStorageTexelBuffer = 1, .eStorageBuffer = 1 }
             }, VMA_MEMORY_USAGE_GPU_ONLY);
-            vmaHostBuffer = std::make_shared<vkt::VmaBufferAllocation>(*device, vkh::VkBufferCreateInfo{
+            vmaHostBuffer = std::make_shared<vkt::VmaBufferAllocation>(VmaAllocator(*device), vkh::VkBufferCreateInfo{
                 .size = memorySize,
                 .usage = {.eTransferSrc = 1, .eTransferDst = 1, .eUniformTexelBuffer = 1, .eStorageTexelBuffer = 1, .eStorageBuffer = 1 }
             }, VMA_MEMORY_USAGE_GPU_TO_CPU);
-            vmaToHostBuffer = std::make_shared<vkt::VmaBufferAllocation>(*device, vkh::VkBufferCreateInfo{
+            vmaToHostBuffer = std::make_shared<vkt::VmaBufferAllocation>(VmaAllocator(*device), vkh::VkBufferCreateInfo{
                .size = memorySize,
                .usage = {.eTransferSrc = 1, .eTransferDst = 1, .eUniformTexelBuffer = 1, .eStorageTexelBuffer = 1, .eStorageBuffer = 1 }
             }, VMA_MEMORY_USAGE_GPU_TO_CPU);
@@ -338,10 +358,10 @@ namespace rad {
         // 
         vkt::Vector<uint32_t>
             // in-host buffers
-            keysHostVector = vkt::Vector<uint32_t>(vmaHostBuffer, keysOffset, elementCount * 4u),
-            keysToHostVector = vkt::Vector<uint32_t>(vmaToHostBuffer, keysOffset, elementCount * 4u),
-            keysDeviceVector = vkt::Vector<uint32_t>(vmaDeviceBuffer, keysOffset, elementCount * 4u),
-            swapDeviceVector = vkt::Vector<uint32_t>(vmaDeviceBuffer, keysBackupOffset, elementCount * 4u)
+            keysHostVector = vkt::Vector<uint32_t>(std::dynamic_pointer_cast<vkt::BufferAllocation>(vmaHostBuffer), keysOffset, elementCount * 4u),
+            keysToHostVector = vkt::Vector<uint32_t>(std::dynamic_pointer_cast<vkt::BufferAllocation>(vmaToHostBuffer), keysOffset, elementCount * 4u),
+            keysDeviceVector = vkt::Vector<uint32_t>(std::dynamic_pointer_cast<vkt::BufferAllocation>(vmaDeviceBuffer), keysOffset, elementCount * 4u),
+            swapDeviceVector = vkt::Vector<uint32_t>(std::dynamic_pointer_cast<vkt::BufferAllocation>(vmaDeviceBuffer), keysBackupOffset, elementCount * 4u)
             ;
 
         // on deprecation

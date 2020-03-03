@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <cmath>
 
+#define VKT_VMA_DEVICE_IMPLEMENTATION
 #define VKU_NO_GLFW
 #include <radx/radx.hpp>
 #include "vkt2/fw.hpp"

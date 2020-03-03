@@ -229,11 +229,11 @@ namespace radx {
 
         // create pipeline layout 
         this->pipelineLayout = vk::Device(*device).createPipelineLayout(pplLayoutCi);
-        this->pipelines.push_back(vkt::createCompute(*device, device->getPath(radx::paths::counting   ), pipelineLayout, *device, device->getRecommendedSubgroupSize()));
-        this->pipelines.push_back(vkt::createCompute(*device, device->getPath(radx::paths::partition  ), pipelineLayout, *device, device->getRecommendedSubgroupSize()));
-        this->pipelines.push_back(vkt::createCompute(*device, device->getPath(radx::paths::scattering ), pipelineLayout, *device, device->getRecommendedSubgroupSize()));
-        this->pipelines.push_back(vkt::createCompute(*device, device->getPath(radx::paths::indiction  ), pipelineLayout, *device, device->getRecommendedSubgroupSize()));
-        this->pipelines.push_back(vkt::createCompute(*device, device->getPath(radx::paths::permutation), pipelineLayout, *device, device->getRecommendedSubgroupSize()));
+        this->pipelines.push_back(vkt::createCompute(vk::Device(*device), device->getPath(radx::paths::counting   ), pipelineLayout, vk::PipelineCache(*device), device->getRecommendedSubgroupSize()));
+        this->pipelines.push_back(vkt::createCompute(vk::Device(*device), device->getPath(radx::paths::partition  ), pipelineLayout, vk::PipelineCache(*device), device->getRecommendedSubgroupSize()));
+        this->pipelines.push_back(vkt::createCompute(vk::Device(*device), device->getPath(radx::paths::scattering ), pipelineLayout, vk::PipelineCache(*device), device->getRecommendedSubgroupSize()));
+        this->pipelines.push_back(vkt::createCompute(vk::Device(*device), device->getPath(radx::paths::indiction  ), pipelineLayout, vk::PipelineCache(*device), device->getRecommendedSubgroupSize()));
+        this->pipelines.push_back(vkt::createCompute(vk::Device(*device), device->getPath(radx::paths::permutation), pipelineLayout, vk::PipelineCache(*device), device->getRecommendedSubgroupSize()));
 
         // return shared_ptr when needed
         return VK_SUCCESS;

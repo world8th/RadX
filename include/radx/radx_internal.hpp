@@ -36,10 +36,10 @@ namespace radx {
         virtual InternalInterface& setPrefixScansBufferInfo(const vk::DescriptorBufferInfo& prefixScans = {}){ this->prefixScansBufferInfo = prefixScans; return *this; };
         virtual InternalInterface& setMaxElementCount(const size_t& elementCount = 0) { this->maxElementCount = maxElementCount; return *this; };
         virtual InternalInterface& buildMemory(const vk::DeviceSize& memorySize) {
-            this->bufferMemory = vkt::Vector<uint8_t>(std::make_shared<vkt::VmaBufferAllocation>(*this->device, vkh::VkBufferCreateInfo{
+            this->bufferMemory = vkt::Vector<uint8_t>(VmaAllocator(*this->device), vkh::VkBufferCreateInfo{
                 .size = memorySize,
                 .usage = { .eTransferSrc = 1, .eTransferDst = 1, .eUniformTexelBuffer = 1, .eStorageTexelBuffer = 1, .eStorageBuffer = 1 }
-            }));
+            });
             return *this;
         };
         virtual InternalInterface& buildDescriptorSet();
