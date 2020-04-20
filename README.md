@@ -4,6 +4,7 @@
 
 GPU sorting shaders dedication from vRt project. Optimized for modern GPU's and written on Vulkan API (GLSL).
 
+
 ## Tech Info 
 
 ```MD
@@ -27,6 +28,7 @@ GPU sorting shaders dedication from vRt project. Optimized for modern GPU's and 
 Date: 18.01.2020 helixd2k18@IMN
 ```
 
+
 ## What to be want to do
 
 - Optimized sorting for NVIDIA RTX GPU's (and, probably, Volta GPU's)
@@ -36,12 +38,14 @@ Date: 18.01.2020 helixd2k18@IMN
 - Add support for Intel UHD Graphics 630 (if we will have time)
 - CUDA Compute Cabability 7.5 Interporability
 
+
 ## Preview results
 
 - In average can sort (up to, and more) 1 billion uint32_t elements per second (tested with RTX 2070, achievable in RTX 2070 Super)
 - Outperform parallel std::sort up to 40x faster (Intel Core i7-8700K)
 - Performance tested in Windows 10 (Insiders) and Visual Studio 2019 
 - Can be built by GCC-8 in Linux systems (tested in Ubuntu 18.10)
+
 
 ## Materials 
 
@@ -53,3 +57,11 @@ Date: 18.01.2020 helixd2k18@IMN
 - https://github.com/KhronosGroup/GLSL/blob/master/extensions/nv/GL_NV_shader_subgroup_partitioned.txt
 - https://probablydance.com/2016/12/27/i-wrote-a-faster-sorting-algorithm/
 - https://devblogs.nvidia.com/nvidia-turing-architecture-in-depth/ (optimal architecture)
+- [My Discord](https://discord.gg/NqjBJsG), but currently we have no focus for them... 
+- [My Puzzle](https://vk.cc/afiR3v) for psychologists, psychoanalysts, psychotherapists and students ...
+
+
+## Authors P.S.
+
+- helix.d@IMN
+- RTX@NVIDIA
